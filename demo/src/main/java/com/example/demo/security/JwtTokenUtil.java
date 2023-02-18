@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
 
-import com.example.demo.model.User;
+import com.example.demo.model.UserLogin;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -45,7 +45,7 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
+    public String generateToken(UserLogin user) {
         return doGenerateToken(user.getLogin());
     }
 

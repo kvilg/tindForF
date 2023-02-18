@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 
-import com.example.demo.model.User;
+import com.example.demo.model.UserLogin;
 
 
 import com.example.demo.repo.UserRepo;
@@ -37,24 +37,24 @@ public class UserService implements UserDetailsService {
 
 
 
-    public List<User> getAll() {
+    public List<UserLogin> getAll() {
         return  this.userData.findAll();
     }
-    public User getByLogin(String login) {
+    public UserLogin getByLogin(String login) {
         return this.userData.getByLogin(login);
     }
 
-    public List<User> findUser(String name){
+    public List<UserLogin> findUser(String name){
 
         Session session = sessionFactory.openSession();
 
         CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<User> cr = cb.createQuery(User.class);
-        Root<User> root = cr.from(User.class);
+        CriteriaQuery<UserLogin> cr = cb.createQuery(UserLogin.class);
+        Root<UserLogin> root = cr.from(UserLogin.class);
 
         cr.select(root).where(cb.like(root.get("name"), "%"+name+"%"));
 
-        Query<User> query = session.createQuery(cr);
+        Query<UserLogin> query = session.createQuery(cr);
 
 
         return query.getResultList();
@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User u = getByLogin(login);
+        UserLogin u = getByLogin(login);
         if (Objects.isNull(u)) {
             throw new UsernameNotFoundException(String.format("User %s is not found", login));
         }
@@ -77,14 +77,24 @@ public class UserService implements UserDetailsService {
         if(login == null || password == null){
             throw new NullPointerException();
         }
-        User user = userData.findByLogin(login);
+        UserLogin user = userData.findByLogin(login);
         if(user != null){
             throw new Exception("user is created");
         }
-        User newUser = new User(name,login,password);
+        UserLogin newUser = new UserLogin(name,login,password);
         userData.save(newUser);
-
     }
+
+//    public List<User> searchByLatitudeAndLongitude(float longitude, float Latitude){
+//
+//
+//
+//
+//
+//        return ;
+//    }
+
+
 
 
 }

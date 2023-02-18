@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.User;
+import com.example.demo.model.UserLogin;
 import com.example.demo.model.UserAuth;
 import com.example.demo.model.UserOut;
 import com.example.demo.security.JwtTokenUtil;
@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import com.example.demo.service.UserService;
 import static com.example.demo.model.Constants.TOKEN_PREFIX;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +37,7 @@ public class LoginController {
 
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(json.login, json.password));
-        com.example.demo.model.User user = service.getByLogin(json.login);
+        UserLogin user = service.getByLogin(json.login);
         String token = jwtTokenUtil.generateToken(user);
 
 
@@ -53,7 +52,7 @@ public class LoginController {
         String a = token.substring(TOKEN_PREFIX.length());
         String userLogin = jwtTokenUtil.getUsernameFromToken(a);
 
-        User user = service.getByLogin(userLogin);
+        UserLogin user = service.getByLogin(userLogin);
 
         return new UserOut(user);
     }
